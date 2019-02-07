@@ -1,17 +1,20 @@
-import wallet
+from modules.wallet import *
 from hashlib import sha256
 
 
 class Transaction:
+    signature: object
+    verify_pub_key: object
+
     def __init__(self, sender=None, recipient=None, amount=None):
         if not sender:
-            raise ValueError("Sender address is missing")
+            raise ValueError("Error: sender address is missing")
         if not recipient:
-            raise ValueError("Recepient address is missing")
+            raise ValueError("Error: recipient address is missing")
         if not amount:
-            raise ValueError("Amount is missing")
-        if amount <= 0:
-            raise ValueError("Amount must be bigger than zero")
+            raise ValueError("Error: amount is missing")
+        # if amount <= 0:
+        #     raise ValueError("Error: amount must be bigger than zero")
 
         self.sender = sender
         self.recipient = recipient
@@ -19,12 +22,12 @@ class Transaction:
 
     def get_hash(self):
         tx = self.sender + self.recipient + str(self.amount)
-        tx_hash = sha256(tx.encode("utf-8")).hexdigist()
+        tx_hash = sha256(tx.encode("utf-8")).hexdigest()
         return tx_hash
 
     def get_signature(self, signature, ext_pub_key):
-        self.signature = signature.hex()
-        self.verify_pub_key = ext_pub_key[2:]
+        self.signature = signature
+        self.verify_pub_key = ext_pub_key
 
 
 class CoinbaseTransaction(Transaction):

@@ -1,17 +1,21 @@
-import ecdsa
-import hashlib
-from base58 import b58decode
-from ecdsa import SigningKey, SECP256k1
-from hashlib import sha256
-from binascii import unhexlify, hexlify
-from utilitybelt import dev_random_entropy
+30
+46
+02
+21                                                                      33 bytes
+009835e60055a5d48f5b7b7e197fe2d92740533a5e39f67880bec5f811a097c1fb      R
+02
+21                                                                      33 bytes
+00a54e45d3c5117f67a8fe45f3e9e495612621565334842c82f42ae14d38ee595d      S
 
 
-def double_sha256(key):
-    return sha256(sha256(unhexlify(key)).digest()).hexdigest()
 
 
-a = [1, 2, 3, 4]
-a.append(a[-1])
-for i in a:
-    print(i)
+ <-     (65) start DER sequence
+ <-     (239) length of sequence
+ <-     integer value follows
+ <-     (218) length of integer
+ <-     R
+ <-     another integer follows
+ <-     (20) another integer follows
+ <-     S
+ <-     suffix

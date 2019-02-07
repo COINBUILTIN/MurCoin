@@ -1,11 +1,11 @@
-from tx_validator import validate_tx
+from modules.transactions.tx_validator import validate_tx
 
 
-def save_transactions(transaction):
-    if validate_tx(transaction) is False:
+def save_transactions(serialize_tx):
+    if validate_tx(serialize_tx, None) is False:
         return False
     file = open("mempool", "a")
-    file.write(transaction + '\n')
+    file.write(serialize_tx + '\n')
     file.close()
 
 

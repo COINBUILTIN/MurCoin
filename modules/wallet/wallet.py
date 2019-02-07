@@ -48,8 +48,8 @@ def validate_checksum(string):
     tmp_string = hex_string[:-8]
     new_string = double_sha256(tmp_string)
     first_bytes = new_string[:8]
-    print("last -> " + last_bytes)
-    print("last -> " + first_bytes)
+    # print("last -> " + last_bytes)
+    # print("first -> " + first_bytes)
     if first_bytes == last_bytes:
         return True
     return False
@@ -71,14 +71,11 @@ def base58(address_hex):
     return b58_string
 
 
-def create_signature(private_key, hash_massage):
-    hash_massage = hash_massage.encode("utf-8")
+def create_signature(private_key, message):
     private_key_bytes = unhexlify(private_key)
-    sign_key = SigningKey.from_string(private_key_bytes, curve=SECP256k1)
-    verify_key = sign_key.get_verifying_key()
-    signature = sign_key.sign(hash_massage)
-    assert verify_key.verify(signature, hash_massage)
-    return signature, verify_key.to_string().hex()
+    sign_key = SigningKey.from_string(private_key_bytes, curve=SECP256k1, hashfunc=sha256)
+    signed_message = sign_key.sign(message.encode("utf-8"), hashfunc=sha256, sigencode=ecdsa.util.sigencode_der)
+    return signed_message.hex(), get_ext_public_key(private_key, 0)
 
 
 def public_key_to_address(public_key, testnet):
@@ -121,7 +118,7 @@ def private_key_to_wif(private_key, testnet, compressed):
 
 
 def get_compressed_public_key(private_key, save_to_file):
-    file = open("compr_pub_key", "w")
+    file = open("data/cmpr_pub_key", "w")
     private_key_bytes = unhexlify(private_key)
     verify_key = SigningKey.from_string(private_key_bytes, curve=SECP256k1).get_verifying_key()
     hex_key = verify_key.to_string().hex()
@@ -135,7 +132,7 @@ def get_compressed_public_key(private_key, save_to_file):
 
 
 def get_ext_public_key(private_key, save_to_file):
-    file = open("ext_pub_key", "w")
+    file = open("data/ext_pub_key", "w")
     private_key_bytes = unhexlify(private_key)
     verify_key = SigningKey.from_string(private_key_bytes, curve=SECP256k1).get_verifying_key()
     hex_key = verify_key.to_string().hex()

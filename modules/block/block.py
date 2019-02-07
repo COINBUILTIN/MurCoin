@@ -1,6 +1,6 @@
 from hashlib import sha256
-from tx_validator import validate_tx
-from merkle import merkle_tree
+from modules.transactions.tx_validator import validate_tx
+from modules.block.merkle import merkle_tree
 
 
 class Block:
@@ -17,11 +17,11 @@ class Block:
                  str(self.nonce) +
                  str(self.previous_hash) +
                  "".join(self.transactions) +
-                 self.merkle_root).encode("utf-8")
-        hash_block = sha256(block).hexdigest()
+                 self.merkle_root)
+        hash_block = sha256(block.encode("utf-8")).hexdigest()
         return hash_block
 
-    def validate_transactions(self):
+    def validate_all_transactions(self):
         if self.transactions:
             for tx in self.transactions:
                 if validate_tx(tx) is False:

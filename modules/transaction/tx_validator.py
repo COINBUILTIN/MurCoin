@@ -1,6 +1,7 @@
-import wallet
 from hashlib import sha256
 from ecdsa import VerifyingKey, SECP256k1
+
+from modules.wallet import *
 from .serializer import Deserializer
 from .transaction import Transaction
 
@@ -26,12 +27,12 @@ def check_signature(signature, public_key, hash_m):
     return verify_key.verify(signature, hash_m.encode("utf-8"))
 
 
-def validate_tx(trans, hash_tx):
+def validate_tx(trans):
     tx = Deserializer(trans).get_params()
     print(tx['sender'])
     print(tx['recipient'])
     print(tx['amount'])
-    curr_tx = Transaction(tx['sender'], tx['recipient'], tx['amount'])
+    # hash_tx =
     if check_address(tx['sender']) is False:
         print("Error: sender is invalid")
         return False
@@ -41,7 +42,7 @@ def validate_tx(trans, hash_tx):
     if compare_public_key_with_address(tx['sender'], tx['verify_pub_key']) is False:
         print("Error: public key doesn't belong to the sender")
         return False
-    if not check_signature(tx['signature'], tx['verify_pub_key'], hash_tx):
-        print("Error: signature is invalid")
-        return False
+    # if not check_signature(tx['signature'], tx['verify_pub_key'], hash_tx):
+    #     print("Error: signature is invalid")
+    #     return False
     return True

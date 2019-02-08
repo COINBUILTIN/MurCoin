@@ -1,8 +1,9 @@
-from modules.server import *
-from modules.blockchain import Blockhain
 import os
 import errno
 import requests
+
+from modules.server import *
+from modules.blockchain import Blockhain
 
 
 def check_path(path):

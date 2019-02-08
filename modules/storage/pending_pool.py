@@ -1,4 +1,4 @@
-from modules.transactions.tx_validator import validate_tx
+from modules.transaction.tx_validator import validate_tx
 
 
 def save_transactions(serialize_tx):

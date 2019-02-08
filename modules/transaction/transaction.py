@@ -1,5 +1,6 @@
-from modules.wallet import *
 from hashlib import sha256
+
+from modules.wallet import *
 
 
 class Transaction:
@@ -33,5 +34,5 @@ class Transaction:
 class CoinbaseTransaction(Transaction):
     def __init__(self):
         self.private_key = wallet.wif_to_private_key("minerkey")
-        recipient = open("address", "r").readline()
+        recipient = open("data/address", "r").readline()
         super().__init__(34*"0", recipient, 50)

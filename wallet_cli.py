@@ -5,12 +5,12 @@ import requests
 import subprocess
 
 from pyfiglet import Figlet
-from tx_validator import validate_tx
-from serializer import Serializer
-from transaction import Transaction
 
-import wallet
-import server
+from modules.server import *
+from modules.wallet import *
+from modules.transaction.tx_validator import validate_tx
+from modules.transaction.serializer import Serializer
+from modules.transaction.transaction import Transaction
 
 PRIVATE_KEY = []
 
@@ -48,6 +48,8 @@ class MurCoin(cmd.Cmd):
         answer = yes_or_no("Do you want to delete data?")
         if answer:
             print("Clearing data...")
+            if os.path.exists("data/pending_pool"):
+                os.remove("data/pending_pool")
             if os.path.exists("data/cmpr_pub_key"):
                 os.remove("data/cmpr_pub_key")
             if os.path.exists("data/ext_pub_key"):
@@ -125,7 +127,7 @@ class MurCoin(cmd.Cmd):
         print(self.tx_list)
 
     def do_broadcast(self, argv):
-        """Broadcasting transactions"""
+        """Broadcasting transaction"""
 
         url = "http://" + str(server.ip) + ":" + str(server.port) + "/transaction/new"
 

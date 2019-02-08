@@ -23,6 +23,6 @@ def get_merkle_root(tx_list):
 
 
 def double_hash(first, second):
-    sum = first + second
-    res = sha256(sha256(sum.encode("utf-8")).digest()).hexdigest()
+    sums = first + second
+    res = sha256(sha256(sums.encode("utf-8")).digest()).hexdigest()
     return res

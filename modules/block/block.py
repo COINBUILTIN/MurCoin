@@ -1,5 +1,5 @@
 from hashlib import sha256
-from modules.transactions.tx_validator import validate_tx
+from modules.transaction.tx_validator import validate_tx
 from modules.block.merkle import merkle_tree
 
 
@@ -10,13 +10,22 @@ class Block:
         self.previous_hash = previous_hash
         self.transactions = transactions
         self.merkle_root = merkle_tree(transactions)
-        self.hash_block = self.get_hash_block()
+        self.hash = self.get_hash_block()
+
+    # def get_hash_block(self):
+    #     block = (str(self.timestamp) +
+    #              str(self.nonce) +
+    #              str(self.previous_hash) +
+    #              "".join(self.transactions) +
+    #              self.merkle_root)
+    #     hash_block = sha256(block.encode("utf-8")).hexdigest()
+    #     return hash_block
 
     def get_hash_block(self):
         block = (str(self.timestamp) +
                  str(self.nonce) +
                  str(self.previous_hash) +
-                 "".join(self.transactions) +
+                 str(self.transactions) +
                  self.merkle_root)
         hash_block = sha256(block.encode("utf-8")).hexdigest()
         return hash_block
@@ -27,3 +36,13 @@ class Block:
                 if validate_tx(tx) is False:
                     return False
             return True
+
+    def fill_dict(self):
+        return {
+            "timestamp": self.timestamp,
+            "nonce": self.nonce,
+            "previous_hash": self.previous_hash,
+            "transaction": self.transactions,
+            "merkle_root": self.merkle_root,
+            "hash": self.hash
+        }
